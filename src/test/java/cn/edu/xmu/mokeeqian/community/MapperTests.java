@@ -2,8 +2,10 @@ package cn.edu.xmu.mokeeqian.community;
 
 import cn.edu.xmu.mokeeqian.community.CommunityApplication;
 import cn.edu.xmu.mokeeqian.community.dao.DiscussPostMapper;
+import cn.edu.xmu.mokeeqian.community.dao.LoginTicketMapper;
 import cn.edu.xmu.mokeeqian.community.dao.UserMapper;
 import cn.edu.xmu.mokeeqian.community.entity.DiscussPost;
+import cn.edu.xmu.mokeeqian.community.entity.LoginTicket;
 import cn.edu.xmu.mokeeqian.community.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +27,9 @@ public class MapperTests {
 
     @Autowired
     private DiscussPostMapper discussPostMapper;
+
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
 
     @Test
     public void testSelectUser() {
@@ -74,6 +79,28 @@ public class MapperTests {
 
         int rows = discussPostMapper.selectDiscussPostRows(149);
         System.out.println(rows);
+    }
+
+    @Test
+    public void testInsertLoginTicket() {
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(101);
+        loginTicket.setTicket("aba");
+        loginTicket.setStatus(0);
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 10));
+
+        loginTicketMapper.insertLoginTicket(loginTicket);
+
+    }
+
+    @Test
+    public void testSelectLoginTicket() {
+        LoginTicket loginTicket = loginTicketMapper.selectByTicket("aba");
+        System.out.println(loginTicket);
+        loginTicketMapper.updateStatus("aba", 1);
+        loginTicket = loginTicketMapper.selectByTicket("aba");
+        System.out.println(loginTicket);
+
     }
 
 }
